@@ -1,0 +1,33 @@
+@page "/minimal"
+@rendermode InteractiveServer
+
+<PageTitle>TipTap.Blazor — Minimal Demo</PageTitle>
+
+<h1>Minimal Editor</h1>
+<p class="text-muted">
+    The toolbar and footer can both be hidden for a clean, distraction-free writing experience.
+</p>
+
+<TipTapEditor Options="_options"
+              OnContentChanged="OnChanged"
+              ShowToolbar="false"
+              ShowWordCount="false"
+              CssClass="minimal-editor" />
+
+<p class="mt-2 text-muted" style="font-size:12px;">Characters typed: @_charCount</p>
+
+@code {
+    private int _charCount;
+
+    private TipTapEditorOptions _options = new()
+    {
+        Placeholder   = "Just start writing…",
+        ContentFormat = "html",
+    };
+
+    private void OnChanged(string content)
+    {
+        // Count chars by stripping tags
+        _charCount = System.Text.RegularExpressions.Regex.Replace(content, "<.*?>", "").Length;
+    }
+}

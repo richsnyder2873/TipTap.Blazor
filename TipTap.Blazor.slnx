@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/demo/">
+    <Project Path="demo/TipTap.Blazor.Demo/TipTap.Blazor.Demo.csproj" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/TipTap.Blazor/TipTap.Blazor.csproj" />
+  </Folder>
+</Solution>

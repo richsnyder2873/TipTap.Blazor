@@ -1,0 +1,48 @@
+@page "/json"
+@rendermode InteractiveServer
+
+<PageTitle>TipTap.Blazor — JSON Mode</PageTitle>
+
+<h1>JSON Content Mode</h1>
+<p class="text-muted">
+    The editor can emit and accept TipTap's native JSON document format instead of HTML.
+    This is useful for storing structured content that can be re-rendered server-side.
+</p>
+
+<TipTapEditor @ref="_editor"
+              Options="_options"
+              OnContentChanged="OnContentChanged"
+              ShowToolbar="true"
+              ShowWordCount="true" />
+
+<div class="mt-3">
+    <h5>Live JSON output</h5>
+    <pre class="bg-dark text-light p-3 rounded" style="max-height:300px;overflow:auto;font-size:11px;">@_json</pre>
+</div>
+
+@code {
+    private TipTapEditor _editor = default!;
+    private string _json = "{}";
+
+    private TipTapEditorOptions _options = new()
+    {
+        Placeholder   = "Type something to see the JSON document…",
+        ContentFormat = "json",
+    };
+
+    private void OnContentChanged(string json)
+    {
+        // Pretty-print the JSON
+        try
+        {
+            var doc = System.Text.Json.JsonDocument.Parse(json);
+            _json = System.Text.Json.JsonSerializer.Serialize(
+                doc.RootElement,
+                new System.Text.Json.JsonSerializerOptions { WriteIndented = true });
+        }
+        catch
+        {
+            _json = json;
+        }
+    }
+}

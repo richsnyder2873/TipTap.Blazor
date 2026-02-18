@@ -1,0 +1,133 @@
+@inject TipTapInterop Interop
+@implements IAsyncDisposable
+
+<div class="tiptap-editor-wrapper @CssClass" id="@_wrapperId">
+
+    @if (ShowToolbar)
+    {
+        <TipTapToolbar EditorId="@_editorId"
+                       ActiveState="@_activeState"
+                       OnActiveStateChanged="HandleActiveStateChanged"
+                       CssClass="@ToolbarCssClass" />
+    }
+
+    <!-- TipTap mounts itself inside this element -->
+    <div class="tiptap-editor-content" id="@_contentId"></div>
+
+    @if (ShowWordCount)
+    {
+        <div class="tiptap-editor-footer">
+            <span class="tiptap-word-count">@_wordCount words · @_charCount characters</span>
+        </div>
+    }
+</div>
+
+@code {
+    // ── Parameters ─────────────────────────────────────────────────────────────
+
+    /// <summary>Editor configuration (placeholder, autofocus, editable, content format).</summary>
+    [Parameter] public TipTapEditorOptions Options { get; set; } = new();
+
+    /// <summary>Fired whenever the editor content changes. Receives HTML or JSON string.</summary>
+    [Parameter] public EventCallback<string> OnContentChanged { get; set; }
+
+    /// <summary>Show the formatting toolbar above the editor.</summary>
+    [Parameter] public bool ShowToolbar { get; set; } = true;
+
+    /// <summary>Show word/character count footer below the editor.</summary>
+    [Parameter] public bool ShowWordCount { get; set; } = true;
+
+    /// <summary>Additional CSS classes for the outer wrapper element.</summary>
+    [Parameter] public string? CssClass { get; set; }
+
+    /// <summary>Additional CSS classes passed to the toolbar.</summary>
+    [Parameter] public string? ToolbarCssClass { get; set; }
+
+    // ── State ──────────────────────────────────────────────────────────────────
+    private readonly string _editorId  = $"tiptap-editor-{Guid.NewGuid():N}";
+    private readonly string _wrapperId = $"tiptap-wrapper-{Guid.NewGuid():N}";
+    private string _contentId => $"{_editorId}-content";
+
+    private EditorActiveState _activeState = new();
+    private DotNetObjectReference<TipTapEditor>? _dotNetRef;
+    private int _wordCount;
+    private int _charCount;
+
+    // ── Lifecycle ──────────────────────────────────────────────────────────────
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender) return;
+
+        _dotNetRef = DotNetObjectReference.Create(this);
+        await Interop.InitializeAsync(_editorId, _contentId, Options, _dotNetRef);
+    }
+
+    // ── JS → .NET callbacks (names must match the JS invokeMethodAsync calls) ──
+
+    /// <summary>Called by JS when the editor finishes creating. Unblocks InitializeAsync.</summary>
+    [JSInvokable("NotifyInitializationComplete")]
+    public void JsNotifyInitializationComplete(string editorId)
+        => Interop.NotifyInitializationComplete(editorId);
+
+    /// <summary>Called by JS if the editor fails to create.</summary>
+    [JSInvokable("NotifyInitializationFailed")]
+    public void JsNotifyInitializationFailed(string editorId, string error)
+        => Interop.NotifyInitializationFailed(editorId, error);
+
+    /// <summary>Called by JS whenever editor content changes.</summary>
+    [JSInvokable("OnContentChanged")]
+    public async Task JsOnContentChanged(string content)
+    {
+        await OnContentChanged.InvokeAsync(content);
+        await InvokeAsync(StateHasChanged);
+    }
+
+    /// <summary>Called by JS whenever the selection changes (updates toolbar state).</summary>
+    [JSInvokable("OnSelectionChanged")]
+    public async Task JsOnSelectionChanged(EditorActiveState state)
+    {
+        _activeState = state;
+
+        if (ShowWordCount)
+        {
+            _wordCount = await Interop.GetWordCountAsync(_editorId);
+            _charCount = await Interop.GetCharacterCountAsync(_editorId);
+        }
+
+        await InvokeAsync(StateHasChanged);
+    }
+
+    // ── Internal toolbar callback ──────────────────────────────────────────────
+    private async Task HandleActiveStateChanged(EditorActiveState? state)
+    {
+        if (state is not null)
+        {
+            _activeState = state;
+            await InvokeAsync(StateHasChanged);
+        }
+    }
+
+    // ── Public API ────────────────────────────────────────────────────────────
+
+    /// <summary>Returns the current editor content as HTML or JSON (per Options.ContentFormat).</summary>
+    public Task<string> GetContentAsync() => Interop.GetContentAsync(_editorId);
+
+    /// <summary>Sets the editor content. Pass HTML or JSON matching Options.ContentFormat.</summary>
+    public Task SetContentAsync(string content) => Interop.SetContentAsync(_editorId, content);
+
+    /// <summary>Clears all content from the editor.</summary>
+    public Task ClearContentAsync() => Interop.ClearContentAsync(_editorId);
+
+    /// <summary>Focuses the editor.</summary>
+    public Task FocusAsync() => Interop.FocusAsync(_editorId);
+
+    /// <summary>Switches between editable and read-only mode at runtime.</summary>
+    public Task SetEditableAsync(bool editable) => Interop.SetEditableAsync(_editorId, editable);
+
+    // ── Disposal ──────────────────────────────────────────────────────────────
+    public async ValueTask DisposeAsync()
+    {
+        _dotNetRef?.Dispose();
+        try { await Interop.DestroyAsync(_editorId); } catch { /* circuit may be gone */ }
+    }
+}

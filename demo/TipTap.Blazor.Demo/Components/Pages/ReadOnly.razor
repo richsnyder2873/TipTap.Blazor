@@ -1,0 +1,42 @@
+@page "/readonly"
+@rendermode InteractiveServer
+
+<PageTitle>TipTap.Blazor — Read-only Demo</PageTitle>
+
+<h1>Read-only Mode</h1>
+<p class="text-muted">
+    The editor can be toggled between editable and read-only at runtime.
+</p>
+
+<div class="mb-3 d-flex gap-2">
+    <button class="btn btn-sm @(_editable ? "btn-success" : "btn-outline-secondary")"
+            @onclick="() => ToggleEditable(true)">Editable</button>
+    <button class="btn btn-sm @(!_editable ? "btn-warning" : "btn-outline-secondary")"
+            @onclick="() => ToggleEditable(false)">Read-only</button>
+</div>
+
+<TipTapEditor @ref="_editor"
+              Options="_options"
+              ShowToolbar="@_editable"
+              ShowWordCount="true" />
+
+@code {
+    private TipTapEditor _editor = default!;
+    private bool _editable = false;
+
+    private TipTapEditorOptions _options = new()
+    {
+        Editable      = false,
+        ContentFormat = "html",
+        InitialContent = @"<h2>Read-only Content</h2>
+<p>This editor is currently in <strong>read-only</strong> mode. Toggle the button above to make it editable.</p>
+<ul><li>Item one</li><li>Item two</li><li>Item three</li></ul>
+<blockquote><p>You can switch between modes at any time using the public API.</p></blockquote>",
+    };
+
+    private async Task ToggleEditable(bool editable)
+    {
+        _editable = editable;
+        await _editor.SetEditableAsync(editable);
+    }
+}

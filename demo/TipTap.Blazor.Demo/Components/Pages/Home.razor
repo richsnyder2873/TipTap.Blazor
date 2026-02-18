@@ -1,0 +1,97 @@
+@page "/"
+@rendermode InteractiveServer
+
+<PageTitle>TipTap.Blazor — Full Editor Demo</PageTitle>
+
+<h1>Full Editor</h1>
+<p class="text-muted">
+    A complete TipTap editor with all extensions enabled. Try formatting, tables, lists,
+    code blocks, links, images, and YouTube embeds using the toolbar above.
+</p>
+
+<TipTapEditor @ref="_editor"
+              Options="_options"
+              OnContentChanged="OnContentChanged"
+              ShowToolbar="true"
+              ShowWordCount="true"
+              CssClass="demo-editor" />
+
+<div class="mt-3">
+    <div class="d-flex gap-2 mb-2">
+        <button class="btn btn-sm btn-outline-secondary" @onclick="GetContent">Get Content</button>
+        <button class="btn btn-sm btn-outline-secondary" @onclick="SetSampleContent">Set Sample Content</button>
+        <button class="btn btn-sm btn-outline-danger"    @onclick="ClearContent">Clear</button>
+    </div>
+
+    @if (!string.IsNullOrEmpty(_outputContent))
+    {
+        <div class="card mt-2">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <span>Current HTML output</span>
+                <small class="text-muted">Updated: @_lastChange.ToString("HH:mm:ss")</small>
+            </div>
+            <div class="card-body">
+                <pre class="mb-0" style="white-space:pre-wrap;font-size:12px;">@_outputContent</pre>
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    private TipTapEditor _editor = default!;
+    private string _outputContent = string.Empty;
+    private DateTime _lastChange;
+
+    private TipTapEditorOptions _options = new()
+    {
+        Placeholder    = "Start typing your document here…",
+        Autofocus      = true,
+        Editable       = true,
+        ContentFormat  = "html",
+        InitialContent = "<h2>Welcome to TipTap.Blazor!</h2><p>This editor supports <strong>bold</strong>, <em>italic</em>, <u>underline</u>, and much more. Try the toolbar above.</p>",
+    };
+
+    private void OnContentChanged(string content)
+    {
+        _outputContent = content;
+        _lastChange    = DateTime.Now;
+    }
+
+    private async Task GetContent()
+    {
+        _outputContent = await _editor.GetContentAsync();
+        _lastChange    = DateTime.Now;
+    }
+
+    private async Task SetSampleContent()
+    {
+        await _editor.SetContentAsync(@"
+<h1>Heading 1</h1>
+<h2>Heading 2</h2>
+<p>This is a paragraph with <strong>bold</strong>, <em>italic</em>, <u>underline</u>, and <s>strikethrough</s> text.</p>
+<ul>
+  <li>Bullet item one</li>
+  <li>Bullet item two</li>
+</ul>
+<ol>
+  <li>Ordered item one</li>
+  <li>Ordered item two</li>
+</ol>
+<blockquote><p>A great blockquote from someone famous.</p></blockquote>
+<pre><code>const hello = 'world';
+console.log(hello);</code></pre>
+<table>
+  <thead><tr><th>Column A</th><th>Column B</th><th>Column C</th></tr></thead>
+  <tbody>
+    <tr><td>Cell 1</td><td>Cell 2</td><td>Cell 3</td></tr>
+    <tr><td>Cell 4</td><td>Cell 5</td><td>Cell 6</td></tr>
+  </tbody>
+</table>");
+    }
+
+    private async Task ClearContent()
+    {
+        await _editor.ClearContentAsync();
+        _outputContent = string.Empty;
+    }
+}

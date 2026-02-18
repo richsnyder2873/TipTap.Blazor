@@ -1,0 +1,55 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>TipTap.Blazor</RootNamespace>
+
+    <!-- NuGet package metadata -->
+    <IsPackable>true</IsPackable>
+    <PackageId>TipTap.Blazor</PackageId>
+    <Version>1.0.0</Version>
+    <Authors>TipTap.Blazor Contributors</Authors>
+    <Description>A fully-featured TipTap rich text editor Blazor component with a self-contained JavaScript bundle. No CDN links required.</Description>
+    <PackageTags>blazor;tiptap;richeditor;wysiwyg;rcl;editor</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <RepositoryType>git</RepositoryType>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <SupportedPlatform Include="browser" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="10.0.3" />
+  </ItemGroup>
+
+  <!-- Exclude JS source from package content; only the built bundle goes in -->
+  <ItemGroup>
+    <None Remove="js-src\**" />
+    <Content Remove="js-src\**" />
+  </ItemGroup>
+
+  <!-- Auto-build the JS bundle before every .NET build -->
+  <!-- NODE_TLS_REJECT_UNAUTHORIZED=0 handles corporate proxy/cert environments -->
+  <!-- Install npm deps only when node_modules is missing. Use OS-specific commands so this works cross-platform. -->
+  <Target Name="NpmInstall" BeforeTargets="BeforeBuild" Condition="!Exists('$(MSBuildThisFileDirectory)js-src\node_modules')">
+    <Message Text="Installing pnpm dependencies for TipTap.Blazor..." Importance="high" />
+    <!-- Windows -->
+    <Exec Condition="'$(OS)' == 'Windows_NT'" Command="powershell -Command &quot;$env:NODE_TLS_REJECT_UNAUTHORIZED='0'; pnpm install&quot;" WorkingDirectory="$(MSBuildThisFileDirectory)js-src" />
+    <!-- Non-Windows (bash) -->
+    <Exec Condition="'$(OS)' != 'Windows_NT'" Command="bash -lc 'NODE_TLS_REJECT_UNAUTHORIZED=0 pnpm install'" WorkingDirectory="$(MSBuildThisFileDirectory)js-src" />
+  </Target>
+
+  <!-- Build the JS bundle with Vite using pnpm -->
+  <Target Name="ViteBuild" BeforeTargets="BeforeBuild" Condition="Exists('$(MSBuildThisFileDirectory)js-src\node_modules')">
+    <Message Text="Building TipTap JavaScript bundle with Vite..." Importance="high" />
+    <!-- Windows -->
+    <Exec Condition="'$(OS)' == 'Windows_NT'" Command="powershell -Command &quot;$env:NODE_TLS_REJECT_UNAUTHORIZED='0'; pnpm vite build&quot;" WorkingDirectory="$(MSBuildThisFileDirectory)js-src" />
+    <!-- Non-Windows (bash) -->
+    <Exec Condition="'$(OS)' != 'Windows_NT'" Command="bash -lc 'NODE_TLS_REJECT_UNAUTHORIZED=0 pnpm vite build'" WorkingDirectory="$(MSBuildThisFileDirectory)js-src" />
+  </Target>
+
+</Project>

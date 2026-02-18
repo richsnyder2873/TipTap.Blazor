@@ -1,0 +1,383 @@
+/* ────────────────────────────────────────────────────────────────────────────
+   TipTap.Blazor — Editor Styles
+   CSS variables allow easy theming without overriding rules directly.
+   ──────────────────────────────────────────────────────────────────────────── */
+
+:root {
+  --tiptap-border-color:        #d1d5db;
+  --tiptap-border-radius:       6px;
+  --tiptap-bg:                  #ffffff;
+  --tiptap-text:                #111827;
+  --tiptap-placeholder:         #9ca3af;
+
+  --tiptap-toolbar-bg:          #f9fafb;
+  --tiptap-toolbar-border:      #e5e7eb;
+  --tiptap-toolbar-gap:         4px;
+
+  --tiptap-btn-bg:              transparent;
+  --tiptap-btn-hover-bg:        #e5e7eb;
+  --tiptap-btn-active-bg:       #dbeafe;
+  --tiptap-btn-active-color:    #1d4ed8;
+  --tiptap-btn-disabled-color:  #9ca3af;
+  --tiptap-btn-radius:          4px;
+  --tiptap-btn-size:            28px;
+
+  --tiptap-content-min-height:  200px;
+  --tiptap-content-padding:     12px 16px;
+
+  --tiptap-table-border:        #d1d5db;
+  --tiptap-table-header-bg:     #f3f4f6;
+  --tiptap-selected-cell-bg:    #dbeafe55;
+
+  --tiptap-code-bg:             #f3f4f6;
+  --tiptap-code-color:          #dc2626;
+  --tiptap-codeblock-bg:        #1e293b;
+  --tiptap-codeblock-color:     #e2e8f0;
+
+  --tiptap-popup-bg:            #ffffff;
+  --tiptap-popup-shadow:        0 4px 16px rgba(0,0,0,.15);
+  --tiptap-popup-radius:        8px;
+  --tiptap-popup-z:             1000;
+
+  --tiptap-focus-ring:          0 0 0 2px #3b82f6;
+}
+
+/* ── Wrapper ─────────────────────────────────────────────────────────────── */
+.tiptap-editor-wrapper {
+  display:        flex;
+  flex-direction: column;
+  border:         1px solid var(--tiptap-border-color);
+  border-radius:  var(--tiptap-border-radius);
+  background:     var(--tiptap-bg);
+  color:          var(--tiptap-text);
+  font-family:    system-ui, -apple-system, sans-serif;
+  font-size:      15px;
+  line-height:    1.6;
+  position:       relative;
+}
+
+.tiptap-editor-wrapper:focus-within {
+  box-shadow: var(--tiptap-focus-ring);
+}
+
+/* ── Toolbar ─────────────────────────────────────────────────────────────── */
+.tiptap-toolbar {
+  display:         flex;
+  flex-wrap:       wrap;
+  align-items:     center;
+  gap:             var(--tiptap-toolbar-gap);
+  padding:         6px 8px;
+  background:      var(--tiptap-toolbar-bg);
+  border-bottom:   1px solid var(--tiptap-toolbar-border);
+  border-radius:   var(--tiptap-border-radius) var(--tiptap-border-radius) 0 0;
+  user-select:     none;
+}
+
+.tiptap-toolbar-group {
+  display:     flex;
+  align-items: center;
+  gap:         2px;
+  flex-wrap:   wrap;
+}
+
+.tiptap-toolbar-divider {
+  width:      1px;
+  height:     22px;
+  background: var(--tiptap-toolbar-border);
+  margin:     0 4px;
+  flex-shrink: 0;
+}
+
+/* ── Toolbar buttons ─────────────────────────────────────────────────────── */
+.tiptap-btn {
+  display:         inline-flex;
+  align-items:     center;
+  justify-content: center;
+  min-width:       var(--tiptap-btn-size);
+  height:          var(--tiptap-btn-size);
+  padding:         0 6px;
+  background:      var(--tiptap-btn-bg);
+  border:          none;
+  border-radius:   var(--tiptap-btn-radius);
+  cursor:          pointer;
+  font-size:       13px;
+  color:           inherit;
+  transition:      background 0.1s;
+  white-space:     nowrap;
+}
+
+.tiptap-btn:hover:not(:disabled) {
+  background: var(--tiptap-btn-hover-bg);
+}
+
+.tiptap-btn--active {
+  background: var(--tiptap-btn-active-bg);
+  color:      var(--tiptap-btn-active-color);
+}
+
+.tiptap-btn:disabled {
+  color:  var(--tiptap-btn-disabled-color);
+  cursor: not-allowed;
+}
+
+.tiptap-btn--primary {
+  background: #3b82f6;
+  color:      #fff;
+}
+.tiptap-btn--primary:hover {
+  background: #2563eb;
+}
+
+/* ── Color picker button ─────────────────────────────────────────────────── */
+.tiptap-btn--color {
+  position: relative;
+  cursor:   pointer;
+}
+.tiptap-btn--color input[type="color"] {
+  position: absolute;
+  width:    1px;
+  height:   1px;
+  opacity:  0;
+  pointer-events: none;
+}
+.tiptap-btn--color:hover input[type="color"] {
+  width:    var(--tiptap-btn-size);
+  height:   var(--tiptap-btn-size);
+  opacity:  1;
+  pointer-events: auto;
+  cursor:   pointer;
+}
+
+/* ── Select dropdowns ────────────────────────────────────────────────────── */
+.tiptap-select {
+  height:        var(--tiptap-btn-size);
+  padding:       0 4px;
+  border:        1px solid var(--tiptap-border-color);
+  border-radius: var(--tiptap-btn-radius);
+  background:    var(--tiptap-bg);
+  font-size:     13px;
+  cursor:        pointer;
+}
+
+/* ── Table button group ──────────────────────────────────────────────────── */
+.tiptap-table-ops {
+  display:    flex;
+  flex-wrap:  wrap;
+  gap:        2px;
+  margin-top: 2px;
+}
+
+/* ── Popups ──────────────────────────────────────────────────────────────── */
+.tiptap-popup {
+  position:      absolute;
+  top:           calc(100% + 4px);
+  left:          8px;
+  z-index:       var(--tiptap-popup-z);
+  background:    var(--tiptap-popup-bg);
+  border:        1px solid var(--tiptap-border-color);
+  border-radius: var(--tiptap-popup-radius);
+  box-shadow:    var(--tiptap-popup-shadow);
+  padding:       12px;
+  display:       flex;
+  flex-direction: column;
+  gap:           8px;
+  min-width:     280px;
+}
+
+.tiptap-popup label {
+  font-size:   12px;
+  font-weight: 600;
+  color:       #6b7280;
+}
+
+.tiptap-popup-input {
+  width:         100%;
+  padding:       6px 10px;
+  border:        1px solid var(--tiptap-border-color);
+  border-radius: var(--tiptap-btn-radius);
+  font-size:     14px;
+  box-sizing:    border-box;
+}
+
+.tiptap-popup-actions {
+  display:         flex;
+  justify-content: flex-end;
+  gap:             8px;
+}
+
+/* ── Editor content area ─────────────────────────────────────────────────── */
+.tiptap-editor-content {
+  flex:       1;
+  overflow-y: auto;
+}
+
+/* ProseMirror root */
+.tiptap-editor-content .ProseMirror {
+  min-height: var(--tiptap-content-min-height);
+  padding:    var(--tiptap-content-padding);
+  outline:    none;
+}
+
+/* Placeholder */
+.tiptap-editor-content .ProseMirror p.is-editor-empty:first-child::before {
+  content:        attr(data-placeholder);
+  float:          left;
+  color:          var(--tiptap-placeholder);
+  pointer-events: none;
+  height:         0;
+}
+
+/* Headings */
+.tiptap-editor-content .ProseMirror h1 { font-size: 2em;    font-weight: 700; margin: 0.67em 0; }
+.tiptap-editor-content .ProseMirror h2 { font-size: 1.5em;  font-weight: 700; margin: 0.83em 0; }
+.tiptap-editor-content .ProseMirror h3 { font-size: 1.25em; font-weight: 700; margin: 1em 0; }
+.tiptap-editor-content .ProseMirror h4 { font-size: 1.1em;  font-weight: 700; margin: 1.33em 0; }
+.tiptap-editor-content .ProseMirror h5 { font-size: 0.95em; font-weight: 700; margin: 1.67em 0; }
+.tiptap-editor-content .ProseMirror h6 { font-size: 0.85em; font-weight: 700; margin: 2.33em 0; }
+
+/* Lists */
+.tiptap-editor-content .ProseMirror ul,
+.tiptap-editor-content .ProseMirror ol {
+  padding-left: 1.5em;
+  margin:       0.5em 0;
+}
+
+/* Task list */
+.tiptap-editor-content .ProseMirror ul[data-type="taskList"] {
+  list-style: none;
+  padding-left: 0;
+}
+.tiptap-editor-content .ProseMirror ul[data-type="taskList"] li {
+  display:     flex;
+  align-items: flex-start;
+  gap:         6px;
+}
+.tiptap-editor-content .ProseMirror ul[data-type="taskList"] li > label {
+  flex-shrink: 0;
+  margin-top:  2px;
+}
+
+/* Blockquote */
+.tiptap-editor-content .ProseMirror blockquote {
+  border-left: 4px solid var(--tiptap-border-color);
+  padding:     4px 0 4px 16px;
+  margin:      0.5em 0;
+  color:       #6b7280;
+}
+
+/* Inline code */
+.tiptap-editor-content .ProseMirror code {
+  background:    var(--tiptap-code-bg);
+  color:         var(--tiptap-code-color);
+  border-radius: 3px;
+  padding:       1px 4px;
+  font-family:   'Courier New', monospace;
+  font-size:     0.9em;
+}
+
+/* Code block */
+.tiptap-editor-content .ProseMirror pre {
+  background:    var(--tiptap-codeblock-bg);
+  color:         var(--tiptap-codeblock-color);
+  border-radius: var(--tiptap-border-radius);
+  padding:       12px 16px;
+  margin:        0.5em 0;
+  overflow-x:    auto;
+}
+.tiptap-editor-content .ProseMirror pre code {
+  background: transparent;
+  color:      inherit;
+  padding:    0;
+  font-size:  0.9em;
+}
+
+/* Horizontal rule */
+.tiptap-editor-content .ProseMirror hr {
+  border:     none;
+  border-top: 2px solid var(--tiptap-border-color);
+  margin:     1em 0;
+}
+
+/* Links */
+.tiptap-editor-content .ProseMirror a {
+  color:           #2563eb;
+  text-decoration: underline;
+  cursor:          pointer;
+}
+
+/* Images */
+.tiptap-editor-content .ProseMirror img {
+  max-width:     100%;
+  height:        auto;
+  border-radius: 4px;
+}
+
+/* YouTube iframe wrapper */
+.tiptap-editor-content .ProseMirror div[data-youtube-video] {
+  position:    relative;
+  padding-top: 56.25%; /* 16:9 */
+}
+.tiptap-editor-content .ProseMirror div[data-youtube-video] iframe {
+  position: absolute;
+  top:      0; left: 0;
+  width:    100%; height: 100%;
+  border:   none;
+}
+
+/* ── Tables ──────────────────────────────────────────────────────────────── */
+.tiptap-editor-content .ProseMirror table {
+  border-collapse: collapse;
+  width:           100%;
+  margin:          0.5em 0;
+  overflow:        hidden;
+}
+.tiptap-editor-content .ProseMirror table td,
+.tiptap-editor-content .ProseMirror table th {
+  border:  1px solid var(--tiptap-table-border);
+  padding: 6px 10px;
+  min-width: 60px;
+  vertical-align: top;
+  position: relative;
+  box-sizing: border-box;
+}
+.tiptap-editor-content .ProseMirror table th {
+  background:  var(--tiptap-table-header-bg);
+  font-weight: 600;
+  text-align:  left;
+}
+.tiptap-editor-content .ProseMirror .selectedCell::after {
+  content:    "";
+  position:   absolute;
+  inset:      0;
+  background: var(--tiptap-selected-cell-bg);
+  pointer-events: none;
+  z-index:    2;
+}
+/* Column resize handle */
+.tiptap-editor-content .ProseMirror .column-resize-handle {
+  position:         absolute;
+  right:            -2px;
+  top:              0;
+  bottom:           0;
+  width:            4px;
+  background:       #3b82f6;
+  pointer-events:   none;
+}
+.tiptap-editor-content .ProseMirror.resize-cursor {
+  cursor: col-resize;
+}
+
+/* ── Footer ──────────────────────────────────────────────────────────────── */
+.tiptap-editor-footer {
+  display:       flex;
+  justify-content: flex-end;
+  padding:       4px 10px;
+  border-top:    1px solid var(--tiptap-toolbar-border);
+  background:    var(--tiptap-toolbar-bg);
+  border-radius: 0 0 var(--tiptap-border-radius) var(--tiptap-border-radius);
+}
+
+.tiptap-word-count {
+  font-size: 11px;
+  color:     #9ca3af;
+}
