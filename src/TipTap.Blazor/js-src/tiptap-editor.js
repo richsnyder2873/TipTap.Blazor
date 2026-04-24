@@ -24,6 +24,26 @@ import { createLowlight, common } from 'lowlight';
 
 const lowlight = createLowlight(common);
 
+// ─── Helpers ──────────────────────────────────────────────────────────────────
+// Moves header-only rows from <tbody> into a <thead> so output is semantic HTML.
+// Keeps remaining rows in one <tbody>, preserving Bootstrap stripe selectors.
+function fixTableHtml(html) {
+  const el = document.createElement('div');
+  el.innerHTML = html;
+  el.querySelectorAll('table > tbody').forEach(tbody => {
+    const headerRows = [];
+    for (const row of tbody.querySelectorAll(':scope > tr')) {
+      if (row.children.length > 0 && [...row.children].every(c => c.tagName === 'TH'))
+        headerRows.push(row);
+    }
+    if (headerRows.length === 0) return;
+    const thead = document.createElement('thead');
+    headerRows.forEach(row => thead.appendChild(row)); // moves node, auto-removed from tbody
+    tbody.parentElement.insertBefore(thead, tbody);
+  });
+  return el.innerHTML;
+}
+
 // ─── Instance registry ────────────────────────────────────────────────────────
 const instances = {};
 
@@ -96,7 +116,7 @@ const TipTapBlazor = {
       onUpdate({ editor }) {
         const content = options.contentFormat === 'json'
           ? JSON.stringify(editor.getJSON())
-          : editor.getHTML();
+          : fixTableHtml(editor.getHTML());
         dotNetRef.invokeMethodAsync('OnContentChanged', content).catch(console.error);
       },
       onSelectionUpdate({ editor }) {
@@ -119,7 +139,7 @@ const TipTapBlazor = {
     const { editor, options } = getInstance(editorId);
     return options.contentFormat === 'json'
       ? JSON.stringify(editor.getJSON())
-      : editor.getHTML();
+      : fixTableHtml(editor.getHTML());
   },
 
   setContent(editorId, content) {
