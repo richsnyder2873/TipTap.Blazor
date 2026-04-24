@@ -1,0 +1,74 @@
+@inherits InputBase<string>
+
+<TipTapEditor @ref="_editor"
+              Options="_internalOptions"
+              OnContentChanged="HandleContentChanged"
+              ShowToolbar="ShowToolbar"
+              ShowWordCount="ShowWordCount"
+              CssClass="@CssClass"
+              ToolbarCssClass="@ToolbarCssClass" />
+
+@code {
+    // ── Parameters ─────────────────────────────────────────────────────────────
+
+    /// <summary>Editor configuration (Placeholder, Autofocus, Editable, ContentFormat). InitialContent is ignored — the bound value is used instead.</summary>
+    [Parameter] public TipTapEditorOptions Options { get; set; } = new();
+
+    /// <summary>Show the formatting toolbar above the editor.</summary>
+    [Parameter] public bool ShowToolbar { get; set; } = true;
+
+    /// <summary>Show word/character count footer below the editor.</summary>
+    [Parameter] public bool ShowWordCount { get; set; } = true;
+
+    /// <summary>Additional CSS classes passed to the toolbar.</summary>
+    [Parameter] public string? ToolbarCssClass { get; set; }
+
+    // ── State ──────────────────────────────────────────────────────────────────
+    private TipTapEditor _editor = default!;
+    private TipTapEditorOptions _internalOptions = new();
+    private string? _editorContent;
+    private bool _optionsInitialized;
+
+    // ── Lifecycle ──────────────────────────────────────────────────────────────
+    protected override void OnParametersSet()
+    {
+        if (_optionsInitialized) return;
+        _optionsInitialized = true;
+
+        _internalOptions = new TipTapEditorOptions
+        {
+            Placeholder    = Options.Placeholder,
+            Autofocus      = Options.Autofocus,
+            Editable       = Options.Editable,
+            ContentFormat  = Options.ContentFormat,
+            InitialContent = CurrentValue ?? string.Empty,
+        };
+        _editorContent = CurrentValue;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        // Push externally-changed bound values into the live editor.
+        if (!firstRender && CurrentValue != _editorContent)
+        {
+            _editorContent = CurrentValue;
+            await _editor.SetContentAsync(CurrentValue ?? string.Empty);
+        }
+    }
+
+    // ── Content change callback ────────────────────────────────────────────────
+    private Task HandleContentChanged(string html)
+    {
+        _editorContent = html;
+        CurrentValue   = html;  // notifies EditContext, triggers validation
+        return Task.CompletedTask;
+    }
+
+    // ── InputBase requirement ─────────────────────────────────────────────────
+    protected override bool TryParseValueFromString(string? value, out string result, out string validationErrorMessage)
+    {
+        result = value ?? string.Empty;
+        validationErrorMessage = string.Empty;
+        return true;
+    }
+}

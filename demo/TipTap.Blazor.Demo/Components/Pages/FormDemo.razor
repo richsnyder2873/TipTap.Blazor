@@ -1,0 +1,99 @@
+@page "/form"
+@rendermode InteractiveServer
+@using System.ComponentModel.DataAnnotations
+
+<PageTitle>TipTap.Blazor — Form Demo</PageTitle>
+
+<h1>Form Integration</h1>
+<p class="text-muted">
+    <code>InputTipTap</code> inherits from <code>InputBase&lt;string&gt;</code> so it works inside
+    an <code>EditForm</code> with data-annotation validation just like any other Blazor input.
+</p>
+
+<div class="row">
+    <div class="col-lg-8">
+        <EditForm Model="_model" OnValidSubmit="HandleValidSubmit" OnInvalidSubmit="HandleInvalidSubmit">
+            <DataAnnotationsValidator />
+
+            <div class="mb-3">
+                <label class="form-label fw-semibold" for="title">Title <span class="text-danger">*</span></label>
+                <InputText id="title" class="form-control" @bind-Value="_model.Title" placeholder="Article title…" />
+                <ValidationMessage For="() => _model.Title" class="text-danger small" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Body <span class="text-danger">*</span></label>
+                <InputTipTap @bind-Value="_model.Body"
+                             Options="_editorOptions"
+                             ShowToolbar="true"
+                             ShowWordCount="true" />
+                <ValidationMessage For="() => _model.Body" class="text-danger small" />
+            </div>
+
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-primary">Save</button>
+                <button type="button" class="btn btn-outline-secondary" @onclick="Reset">Reset</button>
+            </div>
+        </EditForm>
+    </div>
+</div>
+
+@if (_submitted)
+{
+    <div class="mt-4 alert @(_valid ? "alert-success" : "alert-danger")">
+        @if (_valid)
+        {
+            <strong>Submitted!</strong>
+            <div class="mt-2"><strong>Title:</strong> @_model.Title</div>
+            <div class="mt-1">
+                <strong>Body (HTML):</strong>
+                <pre class="mt-1 mb-0 p-2 bg-white border rounded" style="white-space:pre-wrap;font-size:11px;">@_model.Body</pre>
+            </div>
+        }
+        else
+        {
+            <p><strong>Validation failed.</strong> Please fix the errors above and try again.</p>
+        }
+    </div>
+}
+
+@code {
+    private ArticleModel _model = new();
+    private bool _submitted;
+    private bool _valid;
+
+    private TipTapEditorOptions _editorOptions = new()
+    {
+        Placeholder   = "Write the article body here…",
+        ContentFormat = "html",
+    };
+
+    private void HandleValidSubmit()
+    {
+        _submitted = true;
+        _valid     = true;
+    }
+
+    private void HandleInvalidSubmit()
+    {
+        _submitted = true;
+        _valid     = false;
+    }
+
+    private void Reset()
+    {
+        _model     = new();
+        _submitted = false;
+    }
+
+    private sealed class ArticleModel
+    {
+        [Required(ErrorMessage = "Title is required.")]
+        [MaxLength(120, ErrorMessage = "Title must be 120 characters or fewer.")]
+        public string Title { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "Body is required.")]
+        [MinLength(10, ErrorMessage = "Body must be at least 10 characters.")]
+        public string Body { get; set; } = string.Empty;
+    }
+}
