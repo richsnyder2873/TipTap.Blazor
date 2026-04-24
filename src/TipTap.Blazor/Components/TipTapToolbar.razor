@@ -311,7 +311,7 @@
     private Task CmdBlockquote() => Cmd("toggleBlockquote");
     private Task CmdCodeBlock() => Cmd("toggleCodeBlock");
     private Task CmdHorizontalRule() => Cmd("setHorizontalRule");
-    private Task CmdInsertTable() => Cmd("insertTable", new { rows = 3, cols = 3, withHeaderRow = true });
+    private Task CmdInsertTable() => Cmd("insertTable", new { rows = 3, cols = 2, withHeaderRow = true });
     private Task CmdAddColumnBefore() => Cmd("addColumnBefore");
     private Task CmdAddColumnAfter() => Cmd("addColumnAfter");
     private Task CmdDeleteColumn() => Cmd("deleteColumn");
