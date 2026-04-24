@@ -18,7 +18,7 @@
             <div class="mb-3">
                 <label class="form-label fw-semibold" for="title">Title <span class="text-danger">*</span></label>
                 <InputText id="title" class="form-control" @bind-Value="_model.Title" placeholder="Article title…" />
-                <ValidationMessage For="() => _model.Title" class="text-danger small" />
+                <ValidationMessage For="@(() => _model.Title)" class="text-danger small" />
             </div>
 
             <div class="mb-3">
@@ -27,7 +27,7 @@
                              Options="_editorOptions"
                              ShowToolbar="true"
                              ShowWordCount="true" />
-                <ValidationMessage For="() => _model.Body" class="text-danger small" />
+                <ValidationMessage For="@(() => _model.Body)" class="text-danger small" />
             </div>
 
             <div class="d-flex gap-2">

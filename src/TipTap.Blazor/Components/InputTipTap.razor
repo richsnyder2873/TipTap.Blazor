@@ -1,12 +1,14 @@
 @inherits InputBase<string>
 
-<TipTapEditor @ref="_editor"
-              Options="_internalOptions"
-              OnContentChanged="HandleContentChanged"
-              ShowToolbar="ShowToolbar"
-              ShowWordCount="ShowWordCount"
-              CssClass="@CssClass"
-              ToolbarCssClass="@ToolbarCssClass" />
+<div @attributes="ExtraAttributes">
+    <TipTapEditor @ref="_editor"
+                  Options="_internalOptions"
+                  OnContentChanged="HandleContentChanged"
+                  ShowToolbar="ShowToolbar"
+                  ShowWordCount="ShowWordCount"
+                  CssClass="@EffectiveCssClass"
+                  ToolbarCssClass="@ToolbarCssClass" />
+</div>
 
 @code {
     // ── Parameters ─────────────────────────────────────────────────────────────
@@ -20,6 +22,9 @@
     /// <summary>Show word/character count footer below the editor.</summary>
     [Parameter] public bool ShowWordCount { get; set; } = true;
 
+    /// <summary>Additional CSS classes applied to the TipTapEditor wrapper element, separate from the validation state classes in CssClass.</summary>
+    [Parameter] public string? EditorCssClass { get; set; }
+
     /// <summary>Additional CSS classes passed to the toolbar.</summary>
     [Parameter] public string? ToolbarCssClass { get; set; }
 
@@ -29,9 +34,20 @@
     private string? _editorContent;
     private bool _optionsInitialized;
 
+    // CssClass (from InputBase) merges AdditionalAttributes["class"] + validation state.
+    // EditorCssClass lets callers add editor-specific wrapper classes independently.
+    private string EffectiveCssClass =>
+        string.Join(" ", new[] { CssClass, EditorCssClass }.Where(s => !string.IsNullOrEmpty(s)));
+
+    // AdditionalAttributes minus "class" — class is already handled by CssClass/EffectiveCssClass.
+    private IReadOnlyDictionary<string, object>? ExtraAttributes =>
+        AdditionalAttributes?.Where(kv => kv.Key != "class")
+                             .ToDictionary(kv => kv.Key, kv => kv.Value);
+
     // ── Lifecycle ──────────────────────────────────────────────────────────────
     protected override void OnParametersSet()
     {
+        base.OnParametersSet();
         if (_optionsInitialized) return;
         _optionsInitialized = true;
 
