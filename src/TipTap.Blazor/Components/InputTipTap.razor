@@ -7,7 +7,8 @@
                   ShowToolbar="ShowToolbar"
                   ShowWordCount="ShowWordCount"
                   CssClass="@EffectiveCssClass"
-                  ToolbarCssClass="@ToolbarCssClass" />
+                  ToolbarCssClass="@ToolbarCssClass"
+                  ToolbarItems="@ToolbarItems" />
 </div>
 
 @code {
@@ -27,6 +28,9 @@
 
     /// <summary>Additional CSS classes passed to the toolbar.</summary>
     [Parameter] public string? ToolbarCssClass { get; set; }
+
+    /// <summary>Which toolbar groups to display. Defaults to all groups.</summary>
+    [Parameter] public ToolbarItems ToolbarItems { get; set; } = ToolbarItems.All;
 
     // ── State ──────────────────────────────────────────────────────────────────
     private TipTapEditor _editor = default!;

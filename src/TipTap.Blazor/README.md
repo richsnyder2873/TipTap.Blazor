@@ -5,6 +5,7 @@ A Blazor Razor Class Library that wraps the [TipTap](https://tiptap.dev) rich te
 ## Features
 
 - Full formatting toolbar (headings, fonts, bold/italic/underline, color, alignment, lists, tables, code blocks, links, images, YouTube)
+- Customizable toolbar — choose which groups to display via a `ToolbarItems` flags enum
 - Word / character count footer
 - HTML and JSON content formats
 - Read-only mode toggle
@@ -174,6 +175,20 @@ If the bound value changes programmatically after the editor has mounted (e.g. l
 | `ShowWordCount` | `bool` | `true` | Show the word/character count footer |
 | `CssClass` | `string?` | `null` | Extra CSS class(es) on the outer wrapper |
 | `ToolbarCssClass` | `string?` | `null` | Extra CSS class(es) on the toolbar |
+| `ToolbarItems` | `ToolbarItems` | `ToolbarItems.All` | Which toolbar groups to display |
+
+### `InputTipTap`
+
+Inherits `InputBase<string>` — use inside `EditForm` with `@bind-Value`.
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `Options` | `TipTapEditorOptions` | `new()` | Editor configuration (`InitialContent` is ignored — the bound value is used) |
+| `ShowToolbar` | `bool` | `true` | Show the formatting toolbar |
+| `ShowWordCount` | `bool` | `true` | Show the word/character count footer |
+| `EditorCssClass` | `string?` | `null` | Extra CSS class(es) on the editor wrapper |
+| `ToolbarCssClass` | `string?` | `null` | Extra CSS class(es) on the toolbar |
+| `ToolbarItems` | `ToolbarItems` | `ToolbarItems.All` | Which toolbar groups to display |
 
 ### `TipTapEditorOptions`
 
@@ -184,6 +199,48 @@ If the bound value changes programmatically after the editor has mounted (e.g. l
 | `Editable` | `bool` | `true` | Whether content is editable |
 | `InitialContent` | `string?` | `null` | HTML or JSON to load on init |
 | `ContentFormat` | `string` | `"html"` | `"html"` or `"json"` |
+
+---
+
+## Toolbar customization
+
+Pass a `ToolbarItems` [flags enum](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/enum#enumeration-types-as-bit-flags) to control which groups appear. The default is `ToolbarItems.All`.
+
+| Value | Toolbar group |
+|-------|--------------|
+| `ToolbarItems.History` | Undo / Redo |
+| `ToolbarItems.BlockType` | Paragraph / Heading selector |
+| `ToolbarItems.FontFamily` | Font family selector |
+| `ToolbarItems.InlineMarks` | Bold, Italic, Underline, Strikethrough, Code, Sub/Superscript |
+| `ToolbarItems.TextColor` | Text color, Highlight |
+| `ToolbarItems.TextAlignment` | Left, Center, Right, Justify |
+| `ToolbarItems.Lists` | Bullet list, Ordered list, Task list |
+| `ToolbarItems.Blocks` | Blockquote, Code block, Horizontal rule, Clear formatting |
+| `ToolbarItems.Link` | Insert / edit / remove link |
+| `ToolbarItems.Image` | Insert image |
+| `ToolbarItems.YouTube` | Embed YouTube video |
+| `ToolbarItems.Table` | Insert and edit tables |
+
+### Show only specific groups
+
+```razor
+<TipTapEditor ToolbarItems="ToolbarItems.InlineMarks | ToolbarItems.Lists | ToolbarItems.Link" />
+```
+
+### Show all except certain groups
+
+```razor
+<TipTapEditor ToolbarItems="ToolbarItems.All & ~ToolbarItems.YouTube & ~ToolbarItems.Image" />
+```
+
+### Same API for `InputTipTap`
+
+```razor
+<InputTipTap @bind-Value="_model.Body"
+             ToolbarItems="ToolbarItems.InlineMarks | ToolbarItems.Lists | ToolbarItems.Link" />
+```
+
+Dividers between groups are shown automatically only when there is visible content on both sides, so the toolbar always looks clean regardless of which combination you choose.
 
 ---
 

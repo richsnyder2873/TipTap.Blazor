@@ -1,0 +1,102 @@
+@page "/toolbar-customization"
+@rendermode InteractiveServer
+
+<PageTitle>TipTap.Blazor — Toolbar Customization</PageTitle>
+
+<h1>Toolbar Customization</h1>
+<p class="text-muted">
+    Pass a <code>ToolbarItems</code> flags value to <code>TipTapEditor</code> or <code>InputTipTap</code>
+    to control which groups appear in the toolbar. Toggle groups below to see the toolbar update live.
+</p>
+
+<div class="row g-3">
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-header fw-semibold">Toolbar groups</div>
+            <div class="card-body pb-2">
+                @foreach (var (label, item) in _groups)
+                {
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox"
+                               id="chk-@item"
+                               checked="@Has(item)"
+                               @onchange="() => Toggle(item)" />
+                        <label class="form-check-label" for="chk-@item">@label</label>
+                    </div>
+                }
+                <div class="mt-3 d-flex gap-2">
+                    <button class="btn btn-sm btn-outline-secondary" @onclick="SelectAll">All</button>
+                    <button class="btn btn-sm btn-outline-secondary" @onclick="SelectNone">None</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mt-3">
+            <div class="card-header fw-semibold">Equivalent markup</div>
+            <div class="card-body p-0">
+                <pre class="m-0 p-3" style="font-size:11px;white-space:pre-wrap;">@CodeSample()</pre>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-8">
+        <TipTapEditor Options="_options"
+                      ToolbarItems="@_items"
+                      ShowToolbar="@(_items != ToolbarItems.None)"
+                      ShowWordCount="true" />
+    </div>
+</div>
+
+@code {
+    private ToolbarItems _items = ToolbarItems.All;
+
+    private static readonly (string Label, ToolbarItems Item)[] _groups =
+    [
+        ("History (undo / redo)",         ToolbarItems.History),
+        ("Block type / Heading",           ToolbarItems.BlockType),
+        ("Font family",                    ToolbarItems.FontFamily),
+        ("Inline marks (bold, italic…)",  ToolbarItems.InlineMarks),
+        ("Text color / highlight",         ToolbarItems.TextColor),
+        ("Text alignment",                 ToolbarItems.TextAlignment),
+        ("Lists",                          ToolbarItems.Lists),
+        ("Blocks (quote, code, hr…)",     ToolbarItems.Blocks),
+        ("Link",                           ToolbarItems.Link),
+        ("Image",                          ToolbarItems.Image),
+        ("YouTube",                        ToolbarItems.YouTube),
+        ("Table",                          ToolbarItems.Table),
+    ];
+
+    private TipTapEditorOptions _options = new()
+    {
+        Placeholder   = "Try the customized toolbar…",
+        ContentFormat = "html",
+    };
+
+    private bool Has(ToolbarItems item) => (_items & item) != 0;
+    private void Toggle(ToolbarItems item) => _items ^= item;
+    private void SelectAll()  => _items = ToolbarItems.All;
+    private void SelectNone() => _items = ToolbarItems.None;
+
+    private string CodeSample()
+    {
+        if (_items == ToolbarItems.All)
+            return
+                "<TipTapEditor\n" +
+                "    ToolbarItems=\"ToolbarItems.All\" />";
+
+        if (_items == ToolbarItems.None)
+            return
+                "<!-- all groups hidden -->\n" +
+                "<TipTapEditor\n" +
+                "    ShowToolbar=\"false\" />";
+
+        var flags = _groups
+            .Where(g => Has(g.Item))
+            .Select(g => $"ToolbarItems.{g.Item}");
+
+        var joined = string.Join(" |\n        ", flags);
+        return
+            "<TipTapEditor ToolbarItems=\"@(\n" +
+            $"    {joined})\" />";
+    }
+}

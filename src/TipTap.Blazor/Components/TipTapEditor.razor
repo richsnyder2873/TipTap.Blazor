@@ -8,7 +8,8 @@
         <TipTapToolbar EditorId="@_editorId"
                        ActiveState="@_activeState"
                        OnActiveStateChanged="HandleActiveStateChanged"
-                       CssClass="@ToolbarCssClass" />
+                       CssClass="@ToolbarCssClass"
+                       Items="@ToolbarItems" />
     }
 
     <!-- TipTap mounts itself inside this element -->
@@ -42,6 +43,9 @@
 
     /// <summary>Additional CSS classes passed to the toolbar.</summary>
     [Parameter] public string? ToolbarCssClass { get; set; }
+
+    /// <summary>Which toolbar groups to display. Defaults to all groups.</summary>
+    [Parameter] public ToolbarItems ToolbarItems { get; set; } = ToolbarItems.All;
 
     // ── State ──────────────────────────────────────────────────────────────────
     private readonly string _editorId  = $"tiptap-editor-{Guid.NewGuid():N}";
