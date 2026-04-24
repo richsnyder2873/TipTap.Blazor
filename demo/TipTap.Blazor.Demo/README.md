@@ -14,11 +14,14 @@ The first build compiles the Vite/TipTap JavaScript bundle automatically via an 
 
 ## What the demo covers
 
-- Basic editor usage with toolbar and word count
-- Reading editor content as HTML
-- Setting and clearing content programmatically
-- Toggling read-only mode
-- `TipTapEditorOptions` (placeholder, autofocus, initial content, content format)
+| Route | Description |
+|-------|-------------|
+| `/` | Full editor — all toolbar groups, word count, get/set/clear content |
+| `/readonly` | Toggle between editable and read-only mode at runtime |
+| `/minimal` | Toolbar and footer both hidden for distraction-free writing |
+| `/json` | `ContentFormat = "json"` — live pretty-printed JSON output |
+| `/form` | `InputTipTap` inside `EditForm` with data-annotation validation |
+| `/toolbar-customization` | `ToolbarItems` flags — toggle individual toolbar groups live |
 
 ## Project references
 

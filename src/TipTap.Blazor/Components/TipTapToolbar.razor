@@ -2,141 +2,201 @@
 
 <div class="tiptap-toolbar @CssClass" role="toolbar" aria-label="Text formatting toolbar">
 
-    <!-- History -->
-    <div class="tiptap-toolbar-group">
-        <button type="button" class="@Btn()" title="Undo (Ctrl+Z)" disabled="@(!ActiveState.CanUndo)" @onclick="CmdUndo">&#8630;</button>
-        <button type="button" class="@Btn()" title="Redo (Ctrl+Y)" disabled="@(!ActiveState.CanRedo)" @onclick="CmdRedo">&#8631;</button>
-    </div>
+    @if (Has(ToolbarItems.History))
+    {
+        <!-- History -->
+        <div class="tiptap-toolbar-group">
+            <button type="button" class="@Btn()" title="Undo (Ctrl+Z)" disabled="@(!ActiveState.CanUndo)" @onclick="CmdUndo">&#8630;</button>
+            <button type="button" class="@Btn()" title="Redo (Ctrl+Y)" disabled="@(!ActiveState.CanRedo)" @onclick="CmdRedo">&#8631;</button>
+        </div>
+    }
 
-    <div class="tiptap-toolbar-divider"></div>
+    @if (ShowDivider(ToolbarItems.BlockType))
+    {
+        <div class="tiptap-toolbar-divider"></div>
+    }
 
-    <!-- Block type / Heading -->
-    <div class="tiptap-toolbar-group">
-        <select class="tiptap-select" title="Text style" @onchange="OnHeadingChange">
-            <option value="paragraph" selected="@ActiveState.Paragraph">Paragraph</option>
-            <option value="1" selected="@ActiveState.H1">Heading 1</option>
-            <option value="2" selected="@ActiveState.H2">Heading 2</option>
-            <option value="3" selected="@ActiveState.H3">Heading 3</option>
-            <option value="4" selected="@ActiveState.H4">Heading 4</option>
-            <option value="5" selected="@ActiveState.H5">Heading 5</option>
-            <option value="6" selected="@ActiveState.H6">Heading 6</option>
-        </select>
-    </div>
+    @if (Has(ToolbarItems.BlockType))
+    {
+        <!-- Block type / Heading -->
+        <div class="tiptap-toolbar-group">
+            <select class="tiptap-select" title="Text style" @onchange="OnHeadingChange">
+                <option value="paragraph" selected="@ActiveState.Paragraph">Paragraph</option>
+                <option value="1" selected="@ActiveState.H1">Heading 1</option>
+                <option value="2" selected="@ActiveState.H2">Heading 2</option>
+                <option value="3" selected="@ActiveState.H3">Heading 3</option>
+                <option value="4" selected="@ActiveState.H4">Heading 4</option>
+                <option value="5" selected="@ActiveState.H5">Heading 5</option>
+                <option value="6" selected="@ActiveState.H6">Heading 6</option>
+            </select>
+        </div>
+    }
 
-    <!-- Font family -->
-    <div class="tiptap-toolbar-group">
-        <select class="tiptap-select" title="Font family" @onchange="OnFontFamilyChange">
-            <option value="">Default</option>
-            <option value="Arial">Arial</option>
-            <option value="Georgia">Georgia</option>
-            <option value="Courier New">Courier New</option>
-            <option value="Times New Roman">Times New Roman</option>
-            <option value="Verdana">Verdana</option>
-            <option value="Tahoma">Tahoma</option>
-            <option value="Trebuchet MS">Trebuchet MS</option>
-        </select>
-    </div>
+    @if (Has(ToolbarItems.FontFamily))
+    {
+        <!-- Font family -->
+        <div class="tiptap-toolbar-group">
+            <select class="tiptap-select" title="Font family" @onchange="OnFontFamilyChange">
+                <option value="">Default</option>
+                <option value="Arial">Arial</option>
+                <option value="Georgia">Georgia</option>
+                <option value="Courier New">Courier New</option>
+                <option value="Times New Roman">Times New Roman</option>
+                <option value="Verdana">Verdana</option>
+                <option value="Tahoma">Tahoma</option>
+                <option value="Trebuchet MS">Trebuchet MS</option>
+            </select>
+        </div>
+    }
 
-    <div class="tiptap-toolbar-divider"></div>
+    @if (ShowDivider(ToolbarItems.InlineMarks))
+    {
+        <div class="tiptap-toolbar-divider"></div>
+    }
 
-    <!-- Inline marks -->
-    <div class="tiptap-toolbar-group">
-        <button type="button" class="@Btn(ActiveState.Bold)" title="Bold (Ctrl+B)" @onclick="CmdBold"><strong>B</strong></button>
-        <button type="button" class="@Btn(ActiveState.Italic)" title="Italic (Ctrl+I)" @onclick="CmdItalic"><em>I</em></button>
-        <button type="button" class="@Btn(ActiveState.Underline)" title="Underline" @onclick="CmdUnderline"><span style="text-decoration:underline">U</span></button>
-        <button type="button" class="@Btn(ActiveState.Strike)" title="Strikethrough" @onclick="CmdStrike"><span style="text-decoration:line-through">S</span></button>
-        <button type="button" class="@Btn(ActiveState.Code)" title="Inline code" @onclick="CmdCode"><code>&lt;/&gt;</code></button>
-        <button type="button" class="@Btn(ActiveState.Subscript)" title="Subscript" @onclick="CmdSubscript">X<sub>2</sub></button>
-        <button type="button" class="@Btn(ActiveState.Superscript)" title="Superscript" @onclick="CmdSuperscript">X<sup>2</sup></button>
-    </div>
+    @if (Has(ToolbarItems.InlineMarks))
+    {
+        <!-- Inline marks -->
+        <div class="tiptap-toolbar-group">
+            <button type="button" class="@Btn(ActiveState.Bold)" title="Bold (Ctrl+B)" @onclick="CmdBold"><strong>B</strong></button>
+            <button type="button" class="@Btn(ActiveState.Italic)" title="Italic (Ctrl+I)" @onclick="CmdItalic"><em>I</em></button>
+            <button type="button" class="@Btn(ActiveState.Underline)" title="Underline" @onclick="CmdUnderline"><span style="text-decoration:underline">U</span></button>
+            <button type="button" class="@Btn(ActiveState.Strike)" title="Strikethrough" @onclick="CmdStrike"><span style="text-decoration:line-through">S</span></button>
+            <button type="button" class="@Btn(ActiveState.Code)" title="Inline code" @onclick="CmdCode"><code>&lt;/&gt;</code></button>
+            <button type="button" class="@Btn(ActiveState.Subscript)" title="Subscript" @onclick="CmdSubscript">X<sub>2</sub></button>
+            <button type="button" class="@Btn(ActiveState.Superscript)" title="Superscript" @onclick="CmdSuperscript">X<sup>2</sup></button>
+        </div>
+    }
 
-    <div class="tiptap-toolbar-divider"></div>
+    @if (ShowDivider(ToolbarItems.TextColor))
+    {
+        <div class="tiptap-toolbar-divider"></div>
+    }
 
-    <!-- Text color / highlight -->
-    <div class="tiptap-toolbar-group tiptap-toolbar-group--color">
-        <label class="@Btn() tiptap-btn--color" title="Text color">
-            <span style="@ColorBarStyle()">A</span>
-            <input type="color" value="@CurrentColorValue()" @onchange="OnTextColorChange" />
-        </label>
-        <button type="button" class="@Btn()" title="Remove text color" @onclick="CmdUnsetColor">&#10007;</button>
-        <label class="@Btn() tiptap-btn--color tiptap-btn--highlight" title="Highlight color">
-            <span>&#9676;</span>
-            <input type="color" value="#ffff00" @onchange="OnHighlightColorChange" />
-        </label>
-        <button type="button" class="@Btn(ActiveState.Highlight)" title="Toggle highlight" @onclick="CmdHighlight">&#9676;</button>
-    </div>
+    @if (Has(ToolbarItems.TextColor))
+    {
+        <!-- Text color / highlight -->
+        <div class="tiptap-toolbar-group tiptap-toolbar-group--color">
+            <label class="@Btn() tiptap-btn--color" title="Text color">
+                <span style="@ColorBarStyle()">A</span>
+                <input type="color" value="@CurrentColorValue()" @onchange="OnTextColorChange" />
+            </label>
+            <button type="button" class="@Btn()" title="Remove text color" @onclick="CmdUnsetColor">&#10007;</button>
+            <label class="@Btn() tiptap-btn--color tiptap-btn--highlight" title="Highlight color">
+                <span>&#9676;</span>
+                <input type="color" value="#ffff00" @onchange="OnHighlightColorChange" />
+            </label>
+            <button type="button" class="@Btn(ActiveState.Highlight)" title="Toggle highlight" @onclick="CmdHighlight">&#9676;</button>
+        </div>
+    }
 
-    <div class="tiptap-toolbar-divider"></div>
+    @if (ShowDivider(ToolbarItems.TextAlignment))
+    {
+        <div class="tiptap-toolbar-divider"></div>
+    }
 
-    <!-- Text alignment -->
-    <div class="tiptap-toolbar-group">
-        <button type="button" class="@Btn(ActiveState.AlignLeft)" title="Align left" @onclick="CmdAlignLeft">&#8676;</button>
-        <button type="button" class="@Btn(ActiveState.AlignCenter)" title="Align center" @onclick="CmdAlignCenter">&#8801;</button>
-        <button type="button" class="@Btn(ActiveState.AlignRight)" title="Align right" @onclick="CmdAlignRight">&#8677;</button>
-        <button type="button" class="@Btn(ActiveState.AlignJustify)" title="Justify" @onclick="CmdAlignJustify">&#8644;</button>
-    </div>
+    @if (Has(ToolbarItems.TextAlignment))
+    {
+        <!-- Text alignment -->
+        <div class="tiptap-toolbar-group">
+            <button type="button" class="@Btn(ActiveState.AlignLeft)" title="Align left" @onclick="CmdAlignLeft">&#8676;</button>
+            <button type="button" class="@Btn(ActiveState.AlignCenter)" title="Align center" @onclick="CmdAlignCenter">&#8801;</button>
+            <button type="button" class="@Btn(ActiveState.AlignRight)" title="Align right" @onclick="CmdAlignRight">&#8677;</button>
+            <button type="button" class="@Btn(ActiveState.AlignJustify)" title="Justify" @onclick="CmdAlignJustify">&#8644;</button>
+        </div>
+    }
 
-    <div class="tiptap-toolbar-divider"></div>
+    @if (ShowDivider(ToolbarItems.Lists))
+    {
+        <div class="tiptap-toolbar-divider"></div>
+    }
 
-    <!-- Lists -->
-    <div class="tiptap-toolbar-group">
-        <button type="button" class="@Btn(ActiveState.BulletList)" title="Bullet list" @onclick="CmdBulletList">&#8226;&#8212;</button>
-        <button type="button" class="@Btn(ActiveState.OrderedList)" title="Ordered list" @onclick="CmdOrderedList">1.&#8212;</button>
-        <button type="button" class="@Btn(ActiveState.TaskList)" title="Task list" @onclick="CmdTaskList">&#9745;</button>
-    </div>
+    @if (Has(ToolbarItems.Lists))
+    {
+        <!-- Lists -->
+        <div class="tiptap-toolbar-group">
+            <button type="button" class="@Btn(ActiveState.BulletList)" title="Bullet list" @onclick="CmdBulletList">&#8226;&#8212;</button>
+            <button type="button" class="@Btn(ActiveState.OrderedList)" title="Ordered list" @onclick="CmdOrderedList">1.&#8212;</button>
+            <button type="button" class="@Btn(ActiveState.TaskList)" title="Task list" @onclick="CmdTaskList">&#9745;</button>
+        </div>
+    }
 
-    <div class="tiptap-toolbar-divider"></div>
+    @if (ShowDivider(ToolbarItems.Blocks))
+    {
+        <div class="tiptap-toolbar-divider"></div>
+    }
 
-    <!-- Blocks -->
-    <div class="tiptap-toolbar-group">
-        <button type="button" class="@Btn(ActiveState.Blockquote)" title="Blockquote" @onclick="CmdBlockquote">&#10077;</button>
-        <button type="button" class="@Btn(ActiveState.CodeBlock)" title="Code block" @onclick="CmdCodeBlock">{ }</button>
-        <button type="button" class="@Btn()" title="Horizontal rule" @onclick="CmdHorizontalRule">&#8213;</button>
-        <button type="button" class="@Btn()" title="Clear all formatting" @onclick="OnClearFormatting">T&#215;</button>
-    </div>
+    @if (Has(ToolbarItems.Blocks))
+    {
+        <!-- Blocks -->
+        <div class="tiptap-toolbar-group">
+            <button type="button" class="@Btn(ActiveState.Blockquote)" title="Blockquote" @onclick="CmdBlockquote">&#10077;</button>
+            <button type="button" class="@Btn(ActiveState.CodeBlock)" title="Code block" @onclick="CmdCodeBlock">{ }</button>
+            <button type="button" class="@Btn()" title="Horizontal rule" @onclick="CmdHorizontalRule">&#8213;</button>
+            <button type="button" class="@Btn()" title="Clear all formatting" @onclick="OnClearFormatting">T&#215;</button>
+        </div>
+    }
 
-    <div class="tiptap-toolbar-divider"></div>
+    @if (ShowDivider(ToolbarItems.Link))
+    {
+        <div class="tiptap-toolbar-divider"></div>
+    }
 
-    <!-- Link -->
-    <div class="tiptap-toolbar-group">
-        <button type="button" class="@Btn(ActiveState.Link)" title="Insert / edit link" @onclick="ToggleLinkPopup">&#128279;</button>
-        @if (ActiveState.Link)
-        {
-            <button type="button" class="@Btn()" title="Remove link" @onclick="CmdUnsetLink">&#10007;</button>
-        }
-    </div>
+    @if (Has(ToolbarItems.Link))
+    {
+        <!-- Link -->
+        <div class="tiptap-toolbar-group">
+            <button type="button" class="@Btn(ActiveState.Link)" title="Insert / edit link" @onclick="ToggleLinkPopup">&#128279;</button>
+            @if (ActiveState.Link)
+            {
+                <button type="button" class="@Btn()" title="Remove link" @onclick="CmdUnsetLink">&#10007;</button>
+            }
+        </div>
+    }
 
-    <!-- Image -->
-    <div class="tiptap-toolbar-group">
-        <button type="button" class="@Btn()" title="Insert image" @onclick="ToggleImagePopup">&#128247;</button>
-    </div>
+    @if (Has(ToolbarItems.Image))
+    {
+        <!-- Image -->
+        <div class="tiptap-toolbar-group">
+            <button type="button" class="@Btn()" title="Insert image" @onclick="ToggleImagePopup">&#128247;</button>
+        </div>
+    }
 
-    <!-- YouTube -->
-    <div class="tiptap-toolbar-group">
-        <button type="button" class="@Btn()" title="Embed YouTube video" @onclick="ToggleYouTubePopup">&#9654;</button>
-    </div>
+    @if (Has(ToolbarItems.YouTube))
+    {
+        <!-- YouTube -->
+        <div class="tiptap-toolbar-group">
+            <button type="button" class="@Btn()" title="Embed YouTube video" @onclick="ToggleYouTubePopup">&#9654;</button>
+        </div>
+    }
 
-    <div class="tiptap-toolbar-divider"></div>
+    @if (ShowDivider(ToolbarItems.Table))
+    {
+        <div class="tiptap-toolbar-divider"></div>
+    }
 
-    <!-- Table -->
-    <div class="tiptap-toolbar-group tiptap-toolbar-group--table">
-        <button type="button" class="@Btn()" title="Insert table" @onclick="CmdInsertTable">&#9638;</button>
-        @if (ActiveState.Table)
-        {
-            <div class="tiptap-table-ops">
-                <button type="button" class="@Btn()" title="Add column before" @onclick="CmdAddColumnBefore">&larr;col</button>
-                <button type="button" class="@Btn()" title="Add column after" @onclick="CmdAddColumnAfter">col&rarr;</button>
-                <button type="button" class="@Btn()" title="Delete column" @onclick="CmdDeleteColumn">&#10005;col</button>
-                <button type="button" class="@Btn()" title="Add row before" @onclick="CmdAddRowBefore">&uarr;row</button>
-                <button type="button" class="@Btn()" title="Add row after" @onclick="CmdAddRowAfter">row&darr;</button>
-                <button type="button" class="@Btn()" title="Delete row" @onclick="CmdDeleteRow">&#10005;row</button>
-                <button type="button" class="@Btn()" title="Merge cells" @onclick="CmdMergeCells">merge</button>
-                <button type="button" class="@Btn()" title="Split cell" @onclick="CmdSplitCell">split</button>
-                <button type="button" class="@Btn()" title="Toggle header row" @onclick="CmdToggleHeaderRow">H-row</button>
-                <button type="button" class="@Btn()" title="Delete table" @onclick="CmdDeleteTable">&#128465;</button>
-            </div>
-        }
-    </div>
+    @if (Has(ToolbarItems.Table))
+    {
+        <!-- Table -->
+        <div class="tiptap-toolbar-group tiptap-toolbar-group--table">
+            <button type="button" class="@Btn()" title="Insert table" @onclick="CmdInsertTable">&#9638;</button>
+            @if (ActiveState.Table)
+            {
+                <div class="tiptap-table-ops">
+                    <button type="button" class="@Btn()" title="Add column before" @onclick="CmdAddColumnBefore">&larr;col</button>
+                    <button type="button" class="@Btn()" title="Add column after" @onclick="CmdAddColumnAfter">col&rarr;</button>
+                    <button type="button" class="@Btn()" title="Delete column" @onclick="CmdDeleteColumn">&#10005;col</button>
+                    <button type="button" class="@Btn()" title="Add row before" @onclick="CmdAddRowBefore">&uarr;row</button>
+                    <button type="button" class="@Btn()" title="Add row after" @onclick="CmdAddRowAfter">row&darr;</button>
+                    <button type="button" class="@Btn()" title="Delete row" @onclick="CmdDeleteRow">&#10005;row</button>
+                    <button type="button" class="@Btn()" title="Merge cells" @onclick="CmdMergeCells">merge</button>
+                    <button type="button" class="@Btn()" title="Split cell" @onclick="CmdSplitCell">split</button>
+                    <button type="button" class="@Btn()" title="Toggle header row" @onclick="CmdToggleHeaderRow">H-row</button>
+                    <button type="button" class="@Btn()" title="Delete table" @onclick="CmdDeleteTable">&#128465;</button>
+                </div>
+            }
+        </div>
+    }
 </div>
 
 <!-- Link popup -->
@@ -190,6 +250,7 @@
     [Parameter] public EditorActiveState ActiveState { get; set; } = new();
     [Parameter] public EventCallback<EditorActiveState?> OnActiveStateChanged { get; set; }
     [Parameter] public string? CssClass { get; set; }
+    [Parameter] public ToolbarItems Items { get; set; } = ToolbarItems.All;
 
     private bool _showLinkPopup;
     private string _linkHref = string.Empty;
@@ -208,6 +269,17 @@
     private static string BtnPrimary() => "tiptap-btn tiptap-btn--primary";
     private string ColorBarStyle() => $"border-bottom: 3px solid {ActiveState.CurrentColor ?? "#000000"}";
     private string CurrentColorValue() => ActiveState.CurrentColor ?? "#000000";
+
+    private bool Has(ToolbarItems item) => (Items & item) != 0;
+
+    // Shows a divider when at least one group to the left and one to the right are enabled.
+    // The enum values are sequential powers of 2, so (boundary - 1) masks all groups before it.
+    private bool ShowDivider(ToolbarItems boundary)
+    {
+        int b = (int)boundary;
+        int flags = (int)Items;
+        return (flags & (b - 1)) != 0 && (flags & ~(b - 1)) != 0;
+    }
 
     private async Task Cmd(string command, object? args = null)
     {
