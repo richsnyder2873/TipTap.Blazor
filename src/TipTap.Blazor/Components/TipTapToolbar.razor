@@ -4,8 +4,8 @@
 
     <!-- History -->
     <div class="tiptap-toolbar-group">
-        <button class="@Btn()" title="Undo (Ctrl+Z)" disabled="@(!ActiveState.CanUndo)" @onclick="CmdUndo">&#8630;</button>
-        <button class="@Btn()" title="Redo (Ctrl+Y)" disabled="@(!ActiveState.CanRedo)" @onclick="CmdRedo">&#8631;</button>
+        <button type="button" class="@Btn()" title="Undo (Ctrl+Z)" disabled="@(!ActiveState.CanUndo)" @onclick="CmdUndo">&#8630;</button>
+        <button type="button" class="@Btn()" title="Redo (Ctrl+Y)" disabled="@(!ActiveState.CanRedo)" @onclick="CmdRedo">&#8631;</button>
     </div>
 
     <div class="tiptap-toolbar-divider"></div>
@@ -41,13 +41,13 @@
 
     <!-- Inline marks -->
     <div class="tiptap-toolbar-group">
-        <button class="@Btn(ActiveState.Bold)" title="Bold (Ctrl+B)" @onclick="CmdBold"><strong>B</strong></button>
-        <button class="@Btn(ActiveState.Italic)" title="Italic (Ctrl+I)" @onclick="CmdItalic"><em>I</em></button>
-        <button class="@Btn(ActiveState.Underline)" title="Underline" @onclick="CmdUnderline"><span style="text-decoration:underline">U</span></button>
-        <button class="@Btn(ActiveState.Strike)" title="Strikethrough" @onclick="CmdStrike"><span style="text-decoration:line-through">S</span></button>
-        <button class="@Btn(ActiveState.Code)" title="Inline code" @onclick="CmdCode"><code>&lt;/&gt;</code></button>
-        <button class="@Btn(ActiveState.Subscript)" title="Subscript" @onclick="CmdSubscript">X<sub>2</sub></button>
-        <button class="@Btn(ActiveState.Superscript)" title="Superscript" @onclick="CmdSuperscript">X<sup>2</sup></button>
+        <button type="button" class="@Btn(ActiveState.Bold)" title="Bold (Ctrl+B)" @onclick="CmdBold"><strong>B</strong></button>
+        <button type="button" class="@Btn(ActiveState.Italic)" title="Italic (Ctrl+I)" @onclick="CmdItalic"><em>I</em></button>
+        <button type="button" class="@Btn(ActiveState.Underline)" title="Underline" @onclick="CmdUnderline"><span style="text-decoration:underline">U</span></button>
+        <button type="button" class="@Btn(ActiveState.Strike)" title="Strikethrough" @onclick="CmdStrike"><span style="text-decoration:line-through">S</span></button>
+        <button type="button" class="@Btn(ActiveState.Code)" title="Inline code" @onclick="CmdCode"><code>&lt;/&gt;</code></button>
+        <button type="button" class="@Btn(ActiveState.Subscript)" title="Subscript" @onclick="CmdSubscript">X<sub>2</sub></button>
+        <button type="button" class="@Btn(ActiveState.Superscript)" title="Superscript" @onclick="CmdSuperscript">X<sup>2</sup></button>
     </div>
 
     <div class="tiptap-toolbar-divider"></div>
@@ -58,82 +58,82 @@
             <span style="@ColorBarStyle()">A</span>
             <input type="color" value="@CurrentColorValue()" @onchange="OnTextColorChange" />
         </label>
-        <button class="@Btn()" title="Remove text color" @onclick="CmdUnsetColor">&#10007;</button>
+        <button type="button" class="@Btn()" title="Remove text color" @onclick="CmdUnsetColor">&#10007;</button>
         <label class="@Btn() tiptap-btn--color tiptap-btn--highlight" title="Highlight color">
             <span>&#9676;</span>
             <input type="color" value="#ffff00" @onchange="OnHighlightColorChange" />
         </label>
-        <button class="@Btn(ActiveState.Highlight)" title="Toggle highlight" @onclick="CmdHighlight">&#9676;</button>
+        <button type="button" class="@Btn(ActiveState.Highlight)" title="Toggle highlight" @onclick="CmdHighlight">&#9676;</button>
     </div>
 
     <div class="tiptap-toolbar-divider"></div>
 
     <!-- Text alignment -->
     <div class="tiptap-toolbar-group">
-        <button class="@Btn(ActiveState.AlignLeft)" title="Align left" @onclick="CmdAlignLeft">&#8676;</button>
-        <button class="@Btn(ActiveState.AlignCenter)" title="Align center" @onclick="CmdAlignCenter">&#8801;</button>
-        <button class="@Btn(ActiveState.AlignRight)" title="Align right" @onclick="CmdAlignRight">&#8677;</button>
-        <button class="@Btn(ActiveState.AlignJustify)" title="Justify" @onclick="CmdAlignJustify">&#8644;</button>
+        <button type="button" class="@Btn(ActiveState.AlignLeft)" title="Align left" @onclick="CmdAlignLeft">&#8676;</button>
+        <button type="button" class="@Btn(ActiveState.AlignCenter)" title="Align center" @onclick="CmdAlignCenter">&#8801;</button>
+        <button type="button" class="@Btn(ActiveState.AlignRight)" title="Align right" @onclick="CmdAlignRight">&#8677;</button>
+        <button type="button" class="@Btn(ActiveState.AlignJustify)" title="Justify" @onclick="CmdAlignJustify">&#8644;</button>
     </div>
 
     <div class="tiptap-toolbar-divider"></div>
 
     <!-- Lists -->
     <div class="tiptap-toolbar-group">
-        <button class="@Btn(ActiveState.BulletList)" title="Bullet list" @onclick="CmdBulletList">&#8226;&#8212;</button>
-        <button class="@Btn(ActiveState.OrderedList)" title="Ordered list" @onclick="CmdOrderedList">1.&#8212;</button>
-        <button class="@Btn(ActiveState.TaskList)" title="Task list" @onclick="CmdTaskList">&#9745;</button>
+        <button type="button" class="@Btn(ActiveState.BulletList)" title="Bullet list" @onclick="CmdBulletList">&#8226;&#8212;</button>
+        <button type="button" class="@Btn(ActiveState.OrderedList)" title="Ordered list" @onclick="CmdOrderedList">1.&#8212;</button>
+        <button type="button" class="@Btn(ActiveState.TaskList)" title="Task list" @onclick="CmdTaskList">&#9745;</button>
     </div>
 
     <div class="tiptap-toolbar-divider"></div>
 
     <!-- Blocks -->
     <div class="tiptap-toolbar-group">
-        <button class="@Btn(ActiveState.Blockquote)" title="Blockquote" @onclick="CmdBlockquote">&#10077;</button>
-        <button class="@Btn(ActiveState.CodeBlock)" title="Code block" @onclick="CmdCodeBlock">{ }</button>
-        <button class="@Btn()" title="Horizontal rule" @onclick="CmdHorizontalRule">&#8213;</button>
-        <button class="@Btn()" title="Clear all formatting" @onclick="OnClearFormatting">T&#215;</button>
+        <button type="button" class="@Btn(ActiveState.Blockquote)" title="Blockquote" @onclick="CmdBlockquote">&#10077;</button>
+        <button type="button" class="@Btn(ActiveState.CodeBlock)" title="Code block" @onclick="CmdCodeBlock">{ }</button>
+        <button type="button" class="@Btn()" title="Horizontal rule" @onclick="CmdHorizontalRule">&#8213;</button>
+        <button type="button" class="@Btn()" title="Clear all formatting" @onclick="OnClearFormatting">T&#215;</button>
     </div>
 
     <div class="tiptap-toolbar-divider"></div>
 
     <!-- Link -->
     <div class="tiptap-toolbar-group">
-        <button class="@Btn(ActiveState.Link)" title="Insert / edit link" @onclick="ToggleLinkPopup">&#128279;</button>
+        <button type="button" class="@Btn(ActiveState.Link)" title="Insert / edit link" @onclick="ToggleLinkPopup">&#128279;</button>
         @if (ActiveState.Link)
         {
-            <button class="@Btn()" title="Remove link" @onclick="CmdUnsetLink">&#10007;</button>
+            <button type="button" class="@Btn()" title="Remove link" @onclick="CmdUnsetLink">&#10007;</button>
         }
     </div>
 
     <!-- Image -->
     <div class="tiptap-toolbar-group">
-        <button class="@Btn()" title="Insert image" @onclick="ToggleImagePopup">&#128247;</button>
+        <button type="button" class="@Btn()" title="Insert image" @onclick="ToggleImagePopup">&#128247;</button>
     </div>
 
     <!-- YouTube -->
     <div class="tiptap-toolbar-group">
-        <button class="@Btn()" title="Embed YouTube video" @onclick="ToggleYouTubePopup">&#9654;</button>
+        <button type="button" class="@Btn()" title="Embed YouTube video" @onclick="ToggleYouTubePopup">&#9654;</button>
     </div>
 
     <div class="tiptap-toolbar-divider"></div>
 
     <!-- Table -->
     <div class="tiptap-toolbar-group tiptap-toolbar-group--table">
-        <button class="@Btn()" title="Insert table" @onclick="CmdInsertTable">&#9638;</button>
+        <button type="button" class="@Btn()" title="Insert table" @onclick="CmdInsertTable">&#9638;</button>
         @if (ActiveState.Table)
         {
             <div class="tiptap-table-ops">
-                <button class="@Btn()" title="Add column before" @onclick="CmdAddColumnBefore">&larr;col</button>
-                <button class="@Btn()" title="Add column after" @onclick="CmdAddColumnAfter">col&rarr;</button>
-                <button class="@Btn()" title="Delete column" @onclick="CmdDeleteColumn">&#10005;col</button>
-                <button class="@Btn()" title="Add row before" @onclick="CmdAddRowBefore">&uarr;row</button>
-                <button class="@Btn()" title="Add row after" @onclick="CmdAddRowAfter">row&darr;</button>
-                <button class="@Btn()" title="Delete row" @onclick="CmdDeleteRow">&#10005;row</button>
-                <button class="@Btn()" title="Merge cells" @onclick="CmdMergeCells">merge</button>
-                <button class="@Btn()" title="Split cell" @onclick="CmdSplitCell">split</button>
-                <button class="@Btn()" title="Toggle header row" @onclick="CmdToggleHeaderRow">H-row</button>
-                <button class="@Btn()" title="Delete table" @onclick="CmdDeleteTable">&#128465;</button>
+                <button type="button" class="@Btn()" title="Add column before" @onclick="CmdAddColumnBefore">&larr;col</button>
+                <button type="button" class="@Btn()" title="Add column after" @onclick="CmdAddColumnAfter">col&rarr;</button>
+                <button type="button" class="@Btn()" title="Delete column" @onclick="CmdDeleteColumn">&#10005;col</button>
+                <button type="button" class="@Btn()" title="Add row before" @onclick="CmdAddRowBefore">&uarr;row</button>
+                <button type="button" class="@Btn()" title="Add row after" @onclick="CmdAddRowAfter">row&darr;</button>
+                <button type="button" class="@Btn()" title="Delete row" @onclick="CmdDeleteRow">&#10005;row</button>
+                <button type="button" class="@Btn()" title="Merge cells" @onclick="CmdMergeCells">merge</button>
+                <button type="button" class="@Btn()" title="Split cell" @onclick="CmdSplitCell">split</button>
+                <button type="button" class="@Btn()" title="Toggle header row" @onclick="CmdToggleHeaderRow">H-row</button>
+                <button type="button" class="@Btn()" title="Delete table" @onclick="CmdDeleteTable">&#128465;</button>
             </div>
         }
     </div>
@@ -151,8 +151,8 @@
             <option value="_blank">New tab</option>
         </select>
         <div class="tiptap-popup-actions">
-            <button class="@BtnPrimary()" @onclick="ApplyLink">Apply</button>
-            <button class="@Btn()" @onclick="CloseLinkPopup">Cancel</button>
+            <button type="button" class="@BtnPrimary()" @onclick="ApplyLink">Apply</button>
+            <button type="button" class="@Btn()" @onclick="CloseLinkPopup">Cancel</button>
         </div>
     </div>
 }
@@ -166,8 +166,8 @@
         <label>Alt text</label>
         <input class="tiptap-popup-input" type="text" placeholder="Description" @bind="_imageAlt" @bind:event="oninput" />
         <div class="tiptap-popup-actions">
-            <button class="@BtnPrimary()" @onclick="ApplyImage">Insert</button>
-            <button class="@Btn()" @onclick="CloseImagePopup">Cancel</button>
+            <button type="button" class="@BtnPrimary()" @onclick="ApplyImage">Insert</button>
+            <button type="button" class="@Btn()" @onclick="CloseImagePopup">Cancel</button>
         </div>
     </div>
 }
@@ -179,8 +179,8 @@
         <label>YouTube URL</label>
         <input class="tiptap-popup-input" type="url" placeholder="https://www.youtube.com/watch?v=..." @bind="_youtubeSrc" @bind:event="oninput" />
         <div class="tiptap-popup-actions">
-            <button class="@BtnPrimary()" @onclick="ApplyYouTube">Embed</button>
-            <button class="@Btn()" @onclick="CloseYouTubePopup">Cancel</button>
+            <button type="button" class="@BtnPrimary()" @onclick="ApplyYouTube">Embed</button>
+            <button type="button" class="@Btn()" @onclick="CloseYouTubePopup">Cancel</button>
         </div>
     </div>
 }
