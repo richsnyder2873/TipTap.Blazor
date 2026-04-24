@@ -3,6 +3,8 @@
     <Project Path="demo/TipTap.Blazor.Demo/TipTap.Blazor.Demo.csproj" />
   </Folder>
   <Folder Name="/src/">
-    <Project Path="src/TipTap.Blazor/TipTap.Blazor.csproj" />
+    <Project Path="src/TipTap.Blazor/TipTap.Blazor.csproj">
+      <BuildType Project="Release" />
+    </Project>
   </Folder>
 </Solution>

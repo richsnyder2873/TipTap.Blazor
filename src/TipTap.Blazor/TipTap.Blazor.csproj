@@ -15,7 +15,8 @@
     <PackageTags>blazor;tiptap;richeditor;wysiwyg;rcl;editor</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <RepositoryType>git</RepositoryType>
-    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Title>TipTap.Blazor Editor</Title>
   </PropertyGroup>
 
   <ItemGroup>
