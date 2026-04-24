@@ -81,11 +81,12 @@ Add the stylesheet to `<head>` and the script bundle before `</body>`:
 
 ### _Imports.razor
 
-Add the component namespace so you don't need `@using` on every page:
+Add the component namespaces so you don't need `@using` on every page:
 
 ```razor
 @using TipTap.Blazor.Components
 @using TipTap.Blazor.Models
+@using Microsoft.AspNetCore.Components.Forms
 ```
 
 ---
@@ -124,6 +125,40 @@ await _editor.ClearContentAsync();
 await _editor.FocusAsync();
 await _editor.SetEditableAsync(false);   // read-only mode
 ```
+
+---
+
+## EditForm integration
+
+Use `InputTipTap` instead of `TipTapEditor` when you need full `EditForm` / validation pipeline integration. It inherits `InputBase<string>`, so `@bind-Value`, `<ValidationMessage>`, and `EditContext.NotifyFieldChanged` all work automatically.
+
+```razor
+<EditForm Model="_model" OnValidSubmit="HandleSubmit">
+    <DataAnnotationsValidator />
+
+    <InputTipTap @bind-Value="_model.Content"
+                 Options="_options" />
+    <ValidationMessage For="@(() => _model.Content)" />
+
+    <button type="submit">Submit</button>
+</EditForm>
+
+@code {
+    private MyModel _model = new();
+
+    private TipTapEditorOptions _options = new()
+    {
+        Placeholder = "Start typing…",
+    };
+
+    private async Task HandleSubmit()
+    {
+        // _model.Content contains the current HTML
+    }
+}
+```
+
+If the bound value changes programmatically after the editor has mounted (e.g. loading a different record without unmounting), `InputTipTap` detects the change and pushes the new content into the live editor automatically.
 
 ---
 
