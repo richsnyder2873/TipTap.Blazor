@@ -83,10 +83,10 @@
             </label>
             <button type="button" class="@Btn()" title="Remove text color" @onclick="CmdUnsetColor">&#10007;</button>
             <label class="@Btn() tiptap-btn--color tiptap-btn--highlight" title="Highlight color">
-                <span>&#9676;</span>
-                <input type="color" value="#ffff00" @onchange="OnHighlightColorChange" />
+                <span style="@HighlightBarStyle()">A</span>
+                <input type="color" value="@_highlightColor" @onchange="OnHighlightColorChange" />
             </label>
-            <button type="button" class="@Btn(ActiveState.Highlight)" title="Toggle highlight" @onclick="CmdHighlight">&#9676;</button>
+            <button type="button" class="@Btn(ActiveState.Highlight)" title="Toggle highlight" @onclick="CmdHighlight"><span style="@HighlightBarStyle()">A</span></button>
         </div>
     }
 
@@ -269,6 +269,8 @@
     private static string BtnPrimary() => "tiptap-btn tiptap-btn--primary";
     private string ColorBarStyle() => $"border-bottom: 3px solid {ActiveState.CurrentColor ?? "#000000"}";
     private string CurrentColorValue() => ActiveState.CurrentColor ?? "#000000";
+    private string _highlightColor = "#ffff00";
+    private string HighlightBarStyle() => $"background-color: {_highlightColor}; padding: 0 2px;";
 
     private bool Has(ToolbarItems item) => (Items & item) != 0;
 
@@ -348,6 +350,7 @@
     private async Task OnHighlightColorChange(ChangeEventArgs e)
     {
         var color = e.Value?.ToString() ?? "#ffff00";
+        _highlightColor = color;
         await Cmd("toggleHighlight", new { color });
     }
 
