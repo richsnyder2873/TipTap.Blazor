@@ -27,6 +27,7 @@ const lowlight = createLowlight(common);
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 // Moves header-only rows from <tbody> into a <thead> so output is semantic HTML.
 // Keeps remaining rows in one <tbody>, preserving Bootstrap stripe selectors.
+// Strips <p> wrappers inside table cells, joining multiple paragraphs with <br/>.
 function fixTableHtml(html) {
   const el = document.createElement('div');
   el.innerHTML = html;
@@ -40,6 +41,11 @@ function fixTableHtml(html) {
     const thead = document.createElement('thead');
     headerRows.forEach(row => thead.appendChild(row)); // moves node, auto-removed from tbody
     tbody.parentElement.insertBefore(thead, tbody);
+  });
+  el.querySelectorAll('td, th').forEach(cell => {
+    const paras = [...cell.querySelectorAll(':scope > p')];
+    if (paras.length === 0) return;
+    cell.innerHTML = paras.map(p => p.innerHTML).join('<br/>');
   });
   return el.innerHTML;
 }
