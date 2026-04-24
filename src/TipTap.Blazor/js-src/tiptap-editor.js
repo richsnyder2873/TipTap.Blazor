@@ -70,7 +70,7 @@ const TipTapBlazor = {
       Superscript,
       Highlight.configure({ multicolor: true }),
       CodeBlockLowlight.configure({ lowlight }),
-      Table.configure({ resizable: true }),
+      Table.configure({ resizable: true, HTMLAttributes: { class: 'table table-striped table-border' } }),
       TableRow,
       TableHeader,
       TableCell,
