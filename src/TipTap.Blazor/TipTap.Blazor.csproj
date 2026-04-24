@@ -17,6 +17,8 @@
     <RepositoryType>git</RepositoryType>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Title>TipTap.Blazor Editor</Title>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -31,6 +33,10 @@
   <ItemGroup>
     <None Remove="js-src\**" />
     <Content Remove="js-src\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="\" />
   </ItemGroup>
 
   <!-- Auto-build the JS bundle before every .NET build -->
