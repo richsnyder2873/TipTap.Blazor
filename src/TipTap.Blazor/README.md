@@ -24,6 +24,12 @@ dotnet pack src/TipTap.Blazor/TipTap.Blazor.csproj --configuration Release --out
 
 This rebuilds the Vite bundle and produces `nupkgs/TipTap.Blazor.1.0.0.nupkg`.
 
+To stamp a specific version without editing the `.csproj`, pass `-p:Version`:
+
+```bash
+dotnet pack src/TipTap.Blazor/TipTap.Blazor.csproj --configuration Release --output ./nupkgs -p:Version=1.2.3
+```
+
 ### 2. Add a local NuGet source
 
 In the **root of your consuming solution**, create or update `nuget.config`:
